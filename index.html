@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My app</title>
+    <style>
+        .del_btn {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" class="friend" placeholder="New friend name">
+    <button onclick="add_friend()">Add</button>
+    <p class="all_friends"></p>
+    <script>
+        let friends = [];
+        function add_friend() {
+            let new_friend = document.querySelector(".friend").value;
+            if(new_friend != "") {
+                friends.push(new_friend);
+                document.querySelector(".friend").value = "";
+                show_friends();
+            } else {
+                alert("Please provide the name!");
+            }
+        }
+
+        function del(i) {
+            friends.splice(i-1, 1);
+            show_friends();
+        }
+
+        function show_friends() {
+            let i = 0;
+            let all_friends = "";
+            while(i < friends.length) {
+                id = i + 1;
+all_friends += friends[i] + "<button class='del_btn' onclick='del(" + id + ")'>x</button><hr>";
+                i++;
+            }
+            document.querySelector(".all_friends").innerHTML = all_friends;
+        }
+    </script>
+</body>
+</html>

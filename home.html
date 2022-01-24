@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCRUD (Search Create Read Update Delete)</title>
+    <style>
+        .edit_friend_form {
+            display: none;
+        }
+        .right {
+            float: right;
+        }
+        .del_btn {
+            color: gray;
+        }
+        .del_btn:hover {
+            background-color: tomato;
+            color: white;
+        }
+        .edit_btn:hover {
+            background-color: cadetblue;
+            color: white;
+        }
+        .add_btn, .update_btn {
+            background-color: green;
+            color: white;
+        }
+        input {
+            border: 1px solid #000;
+        }
+        button {
+            border: none;
+        }
+        input, button {
+            border-radius: 10px;
+            padding: 10px;
+        }
+        #hidden_index {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <p class="add_new_friend_form">
+        <input type="text" id="new_friend" placeholder="New friend name">
+        <button class="add_btn" onclick="add_new_friend()">Add</button>
+    </p>
+    <p class="edit_friend_form">
+        <input type="text" class="update_friend_field" placeholder="Enter the new name">
+        <button onclick="update()" class='update_btn'>Update</button>
+        <input type="text" id="hidden_index">
+        <button onclick="cancel_update_btn()">Cancel</button>
+    </p>
+    <p id="all_friends_here"></p>
+
+    <script>
+        let all_friends = [];
+
+        function add_new_friend() {
+            // Create
+            let new_friend_name = document.querySelector("#new_friend").value;
+            if(new_friend_name == "") {
+                alert("Please provide the name of the friend!");
+            } else {
+                all_friends.push(new_friend_name);
+                document.querySelector("#new_friend").value = "";
+                
+                show();
+            }
+        }
+
+        function del(i) {
+            let res = confirm("Do you really want to delete " + all_friends[i] + " ?");
+            if(res) {
+                all_friends.splice(i, 1);
+            }
+            
+           show();
+        }
+
+        function edit(i) {
+            document.querySelector(".add_new_friend_form").style.display = "none";
+            document.querySelector(".edit_friend_form").style.display = "block";
+            document.querySelector(".update_friend_field").value = all_friends[i];
+            document.querySelector("#hidden_index").value = i;
+        }
+
+        function update() {
+            let i = document.querySelector("#hidden_index").value;
+            all_friends[i] = document.querySelector(".update_friend_field").value + " (edited)"; cancel_update_btn();
+            show();
+        }
+
+        function cancel_update_btn(i) {
+            document.querySelector(".add_new_friend_form").style.display = "block";
+            document.querySelector(".edit_friend_form").style.display = "none";
+            document.querySelector(".update_friend_field").value = " ";
+        }
+
+        function show() {
+            // Read
+            let list_of_friends = "";
+            for(let i = 0; i < all_friends.length; i++) {
+                list_of_friends += all_friends[i] + "<span class='right'><button class='edit_btn' onclick='edit(" + i + ")'>Edit</button><button class='del_btn' onclick='del(" + i + ")'>&times;</button></span><hr>";
+            }
+            document.querySelector("#all_friends_here").innerHTML = list_of_friends;
+        }
+    </script>
+</body>
+</html>
